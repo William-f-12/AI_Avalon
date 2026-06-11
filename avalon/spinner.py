@@ -169,11 +169,17 @@ _CLEAR_LINE = "\r\033[K"
 class Spinner:
     """等待期间在终端最后一行显示旋转字符 + 轮换文案；停止时就地擦除，不留痕、不进日志。"""
 
-    def __init__(self, enabled: bool,
-                 messages: Optional[Union[str, Sequence[str]]] = None,
-                 *, stream=None, use_color: bool = True,
-                 interval: float = 0.12, phrase_every: float = 3.0,
-                 start_delay: float = 0.15):
+    def __init__(
+        self,
+        enabled: bool,
+        messages: Optional[Union[str, Sequence[str]]] = None,
+        *,
+        stream=None,
+        use_color: bool = True,
+        interval: float = 0.12,
+        phrase_every: float = 2.0,
+        start_delay: float = 0.15,
+    ):
         self.enabled = enabled
         if messages is None:
             messages = DEFAULT_MESSAGES
@@ -212,14 +218,14 @@ class Spinner:
         if self._stop.wait(self.start_delay):
             return
         frames = itertools.cycle(_FRAMES)
-        phrase = self.messages[0]   # 首句仍是「玩家N 正在做X」作开场
+        phrase = self.messages[0]  # 首句仍是「玩家N 正在做X」作开场
         last_swap = time.monotonic()
         try:
             self._write(_HIDE_CURSOR)
             while not self._stop.is_set():
                 now = time.monotonic()
                 if now - last_swap >= self.phrase_every:
-                    phrase = self._pick_other(phrase)   # 每次随机换一句（不重复当前）
+                    phrase = self._pick_other(phrase)  # 每次随机换一句（不重复当前）
                     last_swap = now
                 glyph = next(frames)
                 body = f"{glyph} {phrase}"
