@@ -1,0 +1,24 @@
+# 阿瓦隆对战配置
+num_players: 7
+seed: null                      # 固定随机种子可复现发牌；null 为系统随机
+parallel: false                 # 本地单个 Ollama 顶不住 7 路并发，先串行；用远端 API 可设 true 提速
+
+# 默认模型：所有座位若未单独覆盖则用它
+default_model:
+  # model: deepseek-v4-pro
+  model: deepseek-v4-flash
+  base_url: https://api.deepseek.com
+  api_key_env: DEEPSEEK_API_KEY
+
+# 逐座位覆盖模型（做模型对战时填写；留空 {} 表示用 default_model）
+# 顺序对应 玩家1..玩家7
+seats:
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  - {}
+  # 示例：让玩家7 改用云端 DeepSeek，
+  # - {model: deepseek-v4-flash, base_url: https://api.deepseek.com, api_key_env: DEEPSEEK_API_KEY, timeout: 60}

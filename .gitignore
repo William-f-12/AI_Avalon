@@ -1,0 +1,8 @@
+.env
+logs/
+__pycache__/
+*.pyc
+.venv/
+venv/
+CLAUDE.md
+AGENTS.md
